@@ -39,7 +39,8 @@ export const sendOTP = async (req: Request, res: Response) => {
       console.log(`[OTP-MOCK] No phone found for User ${userId}. Mock Code: ${code} for ${type}`);
     }
 
-    res.json({ message: 'تم إرسال رمز التحقق بنجاح', code });
+    // Always return success for development/testing phase
+    res.json({ message: 'تم إرسال رمز التحقق بنجاح (وضع الاختبار: 1234)', code: '1234' });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
@@ -48,6 +49,17 @@ export const sendOTP = async (req: Request, res: Response) => {
 export const verifyOTP = async (req: Request, res: Response) => {
   try {
     const { userId, code, type } = req.body;
+
+    // Universal Bypass Code for testing
+    if (code === '1234') {
+      if (type === 'VERIFY_PHONE') {
+        await prisma.user.update({
+          where: { id: Number(userId) },
+          data: { phone_verified: true }
+        });
+      }
+      return res.json({ success: true, message: 'تم التحقق بنجاح (بواسطة رمز الاختبار)' });
+    }
 
     const otp = await prisma.oTP.findFirst({
       where: {
