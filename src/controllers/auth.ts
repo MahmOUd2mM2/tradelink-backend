@@ -40,9 +40,9 @@ export const registerOTP = async (req: Request, res: Response): Promise<void> =>
     await SMSService.sendSMS(phone, message);
 
     res.json({ 
-      message: 'تم إرسال رمز التحقق لهاتفك لإكمال التسجيل (وضع الاختبار: 1234)', 
+      message: 'تم إرسال رمز التحقق لهاتفك لإكمال التسجيل (وضع الاختبار: 123456)', 
       success: true, 
-      code: '1234' 
+      code: '123456' 
     });
   } catch (err) {
     console.error(err);
@@ -73,8 +73,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       orderBy: { created_at: 'desc' }
     });
 
-    if (otpCode !== '1234' && (!otp || otp.code !== otpCode)) {
-      res.status(400).json({ message: 'رمز التحقق غير صحيح أو انتهت صلاحيته (أدخل 1234 للتجربة)' });
+    if (otpCode !== '123456' && (!otp || otp.code !== otpCode)) {
+      res.status(400).json({ message: 'رمز التحقق غير صحيح أو انتهت صلاحيته (أدخل 123456 للتجربة)' });
       return;
     }
 
@@ -191,8 +191,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         }
       });
 
-      if (otpCode !== '1234' && !otp) {
-        res.status(400).json({ message: 'رمز التحقق غير صحيح أو انتهى (أدخل 1234 للتجربة)' });
+      if (otpCode !== '123456' && !otp) {
+        res.status(400).json({ message: 'رمز التحقق غير صحيح أو انتهى (أدخل 123456 للتجربة)' });
         return;
       }
 
@@ -272,8 +272,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       }
     });
 
-    if (otpCode !== '1234' && !otp) {
-       res.status(400).json({ message: 'رمز التحقق الثنائي (2FA) غير صحيح أو انتهى (أدخل 1234 للتجربة)' });
+    if (otpCode !== '123456' && !otp) {
+       res.status(400).json({ message: 'رمز التحقق الثنائي (2FA) غير صحيح أو انتهى (أدخل 123456 للتجربة)' });
        return;
     }
 
