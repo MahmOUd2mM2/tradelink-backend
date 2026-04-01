@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: tradelink-backend-mahmoud
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        sync: false # User will provide this from Neon/Supabase
+      - key: PORT
+        value: 10000

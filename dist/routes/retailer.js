@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const retailer_1 = require("../controllers/retailer");
+const auth_1 = require("../middlewares/auth");
+const router = (0, express_1.Router)();
+router.post('/pos-sync', auth_1.authenticate, retailer_1.syncPOSSale);
+router.get('/reputation/:id?', auth_1.authenticate, retailer_1.getMerchantBadge);
+router.post('/tax/submit/:invoiceId', auth_1.authenticate, retailer_1.submitInvoiceToTax);
+exports.default = router;

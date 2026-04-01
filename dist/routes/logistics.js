@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const logistics_1 = require("../controllers/logistics");
+const auth_1 = require("../middlewares/auth");
+const router = (0, express_1.Router)();
+router.post('/tracking', auth_1.authenticate, logistics_1.updateTracking);
+router.get('/iot/:id', auth_1.authenticate, logistics_1.getIoTSensorData);
+router.post('/smart-route', auth_1.authenticate, logistics_1.getSmartRoute);
+exports.default = router;

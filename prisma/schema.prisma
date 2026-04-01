@@ -1,0 +1,325 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users User[]
+}
+
+model User {
+  id                  Int               @id @default(autoincrement())
+  name                String
+  email               String            @unique
+  phone               String?           @unique
+  password            String
+  company_name        String?
+  status              String            @default("active")
+  verified            Boolean           @default(false)
+  is_active           Boolean           @default(true)
+  is_admin            Boolean           @default(false)
+  phone_verified      Boolean           @default(false)
+  governorate         String?
+  city                String?
+  points              Int               @default(0)
+  credit_limit        Decimal           @default(0)
+  latitude            Float?
+  longitude           Float?
+  vodafone_cash       String?
+  orange_cash         String?
+  instapay_handle     String?
+  iban                String?
+  bank_account_number String?
+  created_at          DateTime          @default(now())
+  role_id             Int
+  district            String?
+  hayy                String?
+  trade_category      String?
+  village             String?
+  auctions            Auction[]         @relation("BuyerToAuction")
+  bids                Bid[]             @relation("SupplierToBid")
+  discount_rules      DiscountRule[]    @relation("SupplierToDiscount")
+  feedbacks           Feedback[]        @relation("UserFeedback")
+  otps                OTP[]
+  seller_orders       Order[]           @relation("SellerOrders")
+  buyer_orders        Order[]           @relation("BuyerOrders")
+  products            Product[]
+  quotes_received     QuoteRequest[]    @relation("SellerQuotes")
+  quotes_sent         QuoteRequest[]    @relation("BuyerQuotes")
+  retention_metrics   RetentionMetric[]
+  reviews_received    Review[]          @relation("SellerReviews")
+  reviews_given       Review[]          @relation("BuyerReviews")
+  role                Role              @relation(fields: [role_id], references: [id])
+  wallet              Wallet?
+  warehouses          Warehouse[]
+}
+
+model OTP {
+  id         Int      @id @default(autoincrement())
+  user_id    Int?
+  code       String
+  type       String
+  expires_at DateTime
+  created_at DateTime @default(now())
+  user       User?    @relation(fields: [user_id], references: [id])
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  buyer_id   Int
+  seller_id  Int
+  order_id   Int?     @unique
+  rating     Int      @default(5)
+  comment    String?
+  created_at DateTime @default(now())
+  order      Order?   @relation(fields: [order_id], references: [id])
+  seller     User     @relation("SellerReviews", fields: [seller_id], references: [id])
+  buyer      User     @relation("BuyerReviews", fields: [buyer_id], references: [id])
+}
+
+model Product {
+  id             Int            @id @default(autoincrement())
+  supplier_id    Int
+  name           String
+  sku            String         @unique
+  price          Decimal
+  min_order_qty  Int            @default(1)
+  status         String         @default("active")
+  created_at     DateTime       @default(now())
+  bulk_price     Decimal?
+  min_bulk_qty   Int?
+  inventory      Inventory[]
+  order_items    OrderItem[]
+  supplier       User           @relation(fields: [supplier_id], references: [id])
+  quote_requests QuoteRequest[]
+}
+
+model Warehouse {
+  id             Int         @id @default(autoincrement())
+  owner_id       Int
+  city           String
+  address        String
+  capacity       Int?
+  ai_description String?
+  ai_image_url   String?
+  bulk_price     Decimal?
+  min_bulk_qty   Int?
+  inventory      Inventory[]
+  owner          User        @relation(fields: [owner_id], references: [id])
+}
+
+model Inventory {
+  id           Int       @id @default(autoincrement())
+  product_id   Int
+  warehouse_id Int
+  quantity     Int       @default(0)
+  last_sync    DateTime  @default(now())
+  expiry_date  DateTime?
+  warehouse    Warehouse @relation(fields: [warehouse_id], references: [id])
+  product      Product   @relation(fields: [product_id], references: [id])
+
+  @@unique([product_id, warehouse_id])
+}
+
+model Order {
+  id             Int         @id @default(autoincrement())
+  buyer_id       Int
+  seller_id      Int
+  total_amount   Decimal
+  status         String      @default("pending")
+  type           String?
+  created_at     DateTime    @default(now())
+  release_code   String?
+  release_lat    Float?
+  release_lng    Float?
+  release_status String      @default("pending")
+  invoices       Invoice[]
+  seller         User        @relation("SellerOrders", fields: [seller_id], references: [id])
+  buyer          User        @relation("BuyerOrders", fields: [buyer_id], references: [id])
+  items          OrderItem[]
+  payments       Payment[]
+  review         Review?
+  shipments      Shipment[]
+}
+
+model OrderItem {
+  id         Int     @id @default(autoincrement())
+  order_id   Int
+  product_id Int
+  quantity   Int
+  unit_price Decimal
+  product    Product @relation(fields: [product_id], references: [id])
+  order      Order   @relation(fields: [order_id], references: [id])
+}
+
+model Invoice {
+  id             Int     @id @default(autoincrement())
+  order_id       Int
+  invoice_number String  @unique
+  amount         Decimal
+  status         String  @default("unpaid")
+  order          Order   @relation(fields: [order_id], references: [id])
+}
+
+model Payment {
+  id              Int     @id @default(autoincrement())
+  order_id        Int
+  method          String
+  amount          Decimal
+  status          String  @default("pending")
+  transaction_ref String? @unique
+  order           Order   @relation(fields: [order_id], references: [id])
+}
+
+model Shipment {
+  id              Int       @id @default(autoincrement())
+  order_id        Int
+  company         String?
+  tracking_number String?   @unique
+  status          String    @default("pending")
+  delivered_at    DateTime?
+  current_lat     Float?
+  current_lng     Float?
+  order           Order     @relation(fields: [order_id], references: [id])
+}
+
+model CrisisAlert {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  severity    String   @default("medium")
+  region      String?
+  created_at  DateTime @default(now())
+}
+
+model RetentionMetric {
+  id            Int      @id @default(autoincrement())
+  user_id       Int
+  loyalty_score Float
+  churn_risk    String   @default("low")
+  last_analyzed DateTime @default(now())
+  user          User     @relation(fields: [user_id], references: [id])
+}
+
+model AdvisorLog {
+  id         Int      @id @default(autoincrement())
+  category   String
+  message    String
+  metadata   String?
+  created_at DateTime @default(now())
+}
+
+model Wallet {
+  id             Int           @id @default(autoincrement())
+  user_id        Int           @unique
+  balance        Decimal       @default(0)
+  escrow_balance Decimal       @default(0)
+  currency       String        @default("EGP")
+  created_at     DateTime      @default(now())
+  updated_at     DateTime      @updatedAt
+  transactions   Transaction[]
+  user           User          @relation(fields: [user_id], references: [id])
+}
+
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  wallet_id   Int
+  type        String
+  amount      Decimal
+  status      String   @default("pending")
+  reference   String?  @unique
+  description String?
+  created_at  DateTime @default(now())
+  channel     String?
+  wallet      Wallet   @relation(fields: [wallet_id], references: [id])
+}
+
+model MarketTrend {
+  id          Int      @id @default(autoincrement())
+  symbol      String
+  name        String
+  price       Decimal
+  change_24h  Float    @default(0)
+  unit        String
+  last_update DateTime @default(now())
+}
+
+model QuoteRequest {
+  id         Int      @id @default(autoincrement())
+  buyer_id   Int
+  seller_id  Int
+  product_id Int?
+  message    String
+  quantity   Int?
+  status     String   @default("pending")
+  created_at DateTime @default(now())
+  product    Product? @relation(fields: [product_id], references: [id])
+  seller     User     @relation("SellerQuotes", fields: [seller_id], references: [id])
+  buyer      User     @relation("BuyerQuotes", fields: [buyer_id], references: [id])
+}
+
+model Feedback {
+  id      Int    @id @default(autoincrement())
+  user_id Int
+  type    String
+  subject String
+  message String
+  status  String @default("open")
+  user    User   @relation("UserFeedback", fields: [user_id], references: [id])
+}
+
+model DiscountRule {
+  id           Int      @id @default(autoincrement())
+  supplier_id  Int
+  rule_type    String
+  min_value    Decimal
+  discount_pct Decimal
+  active       Boolean  @default(true)
+  created_at   DateTime @default(now())
+  supplier     User     @relation("SupplierToDiscount", fields: [supplier_id], references: [id])
+}
+
+model Auction {
+  id           Int      @id @default(autoincrement())
+  buyer_id     Int
+  title        String
+  description  String?
+  product_name String
+  quantity     Int
+  target_price Decimal?
+  expiry_at    DateTime
+  status       String   @default("open")
+  created_at   DateTime @default(now())
+  buyer        User     @relation("BuyerToAuction", fields: [buyer_id], references: [id])
+  bids         Bid[]
+}
+
+model Bid {
+  id            Int      @id @default(autoincrement())
+  auction_id    Int
+  supplier_id   Int
+  price         Decimal
+  delivery_days Int
+  notes         String?
+  status        String   @default("pending")
+  created_at    DateTime @default(now())
+  supplier      User     @relation("SupplierToBid", fields: [supplier_id], references: [id])
+  auction       Auction  @relation(fields: [auction_id], references: [id])
+}
+
+model ImmutableLog {
+  id             Int      @id @default(autoincrement())
+  entity_type    String
+  entity_id      Int
+  action         String
+  previous_state String?
+  new_state      String?
+  signature      String?
+  created_at     DateTime @default(now())
+}
