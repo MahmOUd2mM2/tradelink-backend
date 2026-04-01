@@ -16,23 +16,21 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
+app.get('/api/health', (req: Request, res: Response) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString(), message: 'TradeLink Pro API Health Check' });
+});
+
 app.get('/', (req: Request, res: Response) => {
   res.json({
     message: 'TradeLink Pro API is running',
-    version: '2.0.0',
-    endpoints: {
+    version: '2.0.1',
+    environment: process.env.NODE_ENV || 'development',
+    time: new Date().toISOString(),
+    endpoints_checked: true,
+    base_urls: {
       auth: '/api/auth',
-      products: '/api/products',
-      orders: '/api/orders',
-      payments: '/api/payments',
-      invoices: '/api/invoices',
-      shipments: '/api/shipments',
-      warehouses: '/api/warehouses',
-      inventory: '/api/inventory',
-      users: '/api/users',
-      finance: '/api/finance',
-      advisor: '/api/advisor',
-      dashboard: '/api/dashboard'
+      otp: '/api/otp',
+      products: '/api/products'
     }
   });
 });
