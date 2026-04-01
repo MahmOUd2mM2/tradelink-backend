@@ -15,6 +15,19 @@ export const registerOTP = async (req: Request, res: Response): Promise<void> =>
       return;
     }
 
+    // Validation: must be @gmail.com
+    if (!email.toLowerCase().endsWith('@gmail.com')) {
+      res.status(400).json({ message: 'يرجى استخدام بريد إلكتروني ينتهي بـ @gmail.com' });
+      return;
+    }
+
+    // Validation: must be 11 digits and start with 010, 011, 012, 015
+    const phoneRegex = /^(010|011|012|015)\d{8}$/;
+    if (!phoneRegex.test(phone)) {
+      res.status(400).json({ message: 'رقم الهاتف يجب أن يكون 11 رقم ويبدأ بـ 010 أو 011 أو 012 أو 015' });
+      return;
+    }
+
     const existingUser = await prisma.user.findFirst({
       where: { OR: [{ email }, { phone }] }
     });
@@ -70,6 +83,19 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
     if (!name || !email || !password || !roleName || !phone || !otpCode) {
       res.status(400).json({ message: 'يرجى ملء جميع الحقول ورمز التحقق' });
+      return;
+    }
+
+    // Validation: must be @gmail.com
+    if (!email.toLowerCase().endsWith('@gmail.com')) {
+      res.status(400).json({ message: 'يرجى استخدام بريد إلكتروني ينتهي بـ @gmail.com' });
+      return;
+    }
+
+    // Validation: must be 11 digits and start with 010, 011, 012, 015
+    const phoneRegex = /^(010|011|012|015)\d{8}$/;
+    if (!phoneRegex.test(phone)) {
+      res.status(400).json({ message: 'رقم الهاتف يجب أن يكون 11 رقم ويبدأ بـ 010 أو 011 أو 012 أو 015' });
       return;
     }
 
