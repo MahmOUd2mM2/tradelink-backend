@@ -39,7 +39,11 @@ export const registerOTP = async (req: Request, res: Response): Promise<void> =>
     const message = `رمز التسجيل الخاص بك في منصة TradeLink Pro هو: ${code}.`;
     await SMSService.sendSMS(phone, message);
 
-    res.json({ message: 'تم إرسال رمز التحقق لهاتفك لإكمال التسجيل', success: true, mockCode: code });
+    res.json({ 
+      message: 'تم إرسال رمز التحقق لهاتفك لإكمال التسجيل (وضع الاختبار: 1234)', 
+      success: true, 
+      code: '1234' 
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'خطأ في إرسال رمز التحقق' });
@@ -69,8 +73,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       orderBy: { created_at: 'desc' }
     });
 
-    if (otpCode !== '123456' && (!otp || otp.code !== otpCode)) {
-      res.status(400).json({ message: 'رمز التحقق غير صحيح أو انتهت صلاحيته (أدخل 123456 للتجربة)' });
+    if (otpCode !== '1234' && (!otp || otp.code !== otpCode)) {
+      res.status(400).json({ message: 'رمز التحقق غير صحيح أو انتهت صلاحيته (أدخل 1234 للتجربة)' });
       return;
     }
 
@@ -187,8 +191,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         }
       });
 
-      if (otpCode !== '123456' && !otp) {
-        res.status(400).json({ message: 'رمز التحقق غير صحيح أو انتهى (أدخل 123456 للتجربة)' });
+      if (otpCode !== '1234' && !otp) {
+        res.status(400).json({ message: 'رمز التحقق غير صحيح أو انتهى (أدخل 1234 للتجربة)' });
         return;
       }
 
