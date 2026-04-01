@@ -40,7 +40,7 @@ export const sendOTP = async (req: Request, res: Response) => {
     }
 
     // Always return success for development/testing phase
-    res.json({ message: 'تم إرسال رمز التحقق بنجاح (وضع الاختبار: 1234)', code: '1234' });
+    res.json({ success: true, message: 'تم إرسال رمز التحقق بنجاح (وضع الاختبار: 1234)', code: '1234' });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
