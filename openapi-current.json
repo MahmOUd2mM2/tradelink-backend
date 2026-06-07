@@ -1,0 +1,1815 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Coursaty API",
+    "description": "Backend API for Coursaty – online course platform (مشروع التخرج)",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Register",
+        "operationId": "register_api_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": "@{schema=}"
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/api/verify": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Verify Email",
+        "operationId": "verify_email_api_verify_get",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": "@{type=string; title=Token}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login",
+        "description": "OAuth2 compatible login. The 'username' field accepts the user's email.\nUsed by Swagger UI Authorize button.",
+        "operationId": "login_api_login_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": "@{schema=}"
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/api/login/json": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login Json",
+        "description": "JSON-based login for frontend applications.",
+        "operationId": "login_json_api_login_json_post",
+        "requestBody": {
+          "content": {
+            "application/json": "@{schema=}"
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/api/refresh": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Refresh Token",
+        "operationId": "refresh_token_api_refresh_post",
+        "requestBody": {
+          "content": {
+            "application/json": "@{schema=}"
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/api/forgot-password": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Forgot Password",
+        "operationId": "forgot_password_api_forgot_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": "@{schema=}"
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/api/reset-password": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Reset Password",
+        "operationId": "reset_password_api_reset_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": "@{schema=}"
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/api/me": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Me",
+        "operationId": "me_api_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ]
+      }
+    },
+    "/api/courses": {
+      "get": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "List Courses",
+        "operationId": "list_courses_api_courses_get",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": "@{anyOf=System.Object[]; description=Filter by category: prog, tech, lang, design; title=Category}",
+            "description": "Filter by category: prog, tech, lang, design"
+          },
+          {
+            "name": "price_type",
+            "in": "query",
+            "required": false,
+            "schema": "@{anyOf=System.Object[]; description=Filter: free or paid; title=Price Type}",
+            "description": "Filter: free or paid"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": "@{anyOf=System.Object[]; description=Search in title; title=Search}",
+            "description": "Search in title"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Create Course",
+        "operationId": "create_course_api_courses_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": "@{schema=}"
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/api/courses/{course_id}": {
+      "get": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Get Course",
+        "operationId": "get_course_api_courses__course_id__get",
+        "parameters": [
+          {
+            "name": "course_id",
+            "in": "path",
+            "required": true,
+            "schema": "@{type=integer; title=Course Id}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Update Course",
+        "operationId": "update_course_api_courses__course_id__put",
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ],
+        "parameters": [
+          {
+            "name": "course_id",
+            "in": "path",
+            "required": true,
+            "schema": "@{type=integer; title=Course Id}"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": "@{schema=}"
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Delete Course",
+        "operationId": "delete_course_api_courses__course_id__delete",
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ],
+        "parameters": [
+          {
+            "name": "course_id",
+            "in": "path",
+            "required": true,
+            "schema": "@{type=integer; title=Course Id}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/api/courses/{course_id}/lessons": {
+      "get": {
+        "tags": [
+          "Lessons"
+        ],
+        "summary": "List Lessons",
+        "operationId": "list_lessons_api_courses__course_id__lessons_get",
+        "parameters": [
+          {
+            "name": "course_id",
+            "in": "path",
+            "required": true,
+            "schema": "@{type=integer; title=Course Id}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Lessons"
+        ],
+        "summary": "Add Lesson",
+        "operationId": "add_lesson_api_courses__course_id__lessons_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ],
+        "parameters": [
+          {
+            "name": "course_id",
+            "in": "path",
+            "required": true,
+            "schema": "@{type=integer; title=Course Id}"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": "@{schema=}"
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/api/lessons/{lesson_id}/complete": {
+      "post": {
+        "tags": [
+          "Lessons"
+        ],
+        "summary": "Mark Lesson Complete",
+        "operationId": "mark_lesson_complete_api_lessons__lesson_id__complete_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ],
+        "parameters": [
+          {
+            "name": "lesson_id",
+            "in": "path",
+            "required": true,
+            "schema": "@{type=integer; title=Lesson Id}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/api/enroll/{course_id}": {
+      "post": {
+        "tags": [
+          "Enrollments"
+        ],
+        "summary": "Enroll",
+        "operationId": "enroll_api_enroll__course_id__post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ],
+        "parameters": [
+          {
+            "name": "course_id",
+            "in": "path",
+            "required": true,
+            "schema": "@{type=integer; title=Course Id}"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/api/my-courses": {
+      "get": {
+        "tags": [
+          "Enrollments"
+        ],
+        "summary": "My Courses",
+        "operationId": "my_courses_api_my_courses_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ]
+      }
+    },
+    "/api/apply-coupon": {
+      "post": {
+        "tags": [
+          "Payments"
+        ],
+        "summary": "Apply Coupon",
+        "operationId": "apply_coupon_api_apply_coupon_post",
+        "requestBody": {
+          "content": {
+            "application/json": "@{schema=}"
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/api/checkout/{course_id}": {
+      "post": {
+        "tags": [
+          "Payments"
+        ],
+        "summary": "Checkout",
+        "operationId": "checkout_api_checkout__course_id__post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ],
+        "parameters": [
+          {
+            "name": "course_id",
+            "in": "path",
+            "required": true,
+            "schema": "@{type=integer; title=Course Id}"
+          },
+          {
+            "name": "coupon_code",
+            "in": "query",
+            "required": false,
+            "schema": "@{anyOf=System.Object[]; title=Coupon Code}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/api/webhook/stripe": {
+      "post": {
+        "tags": [
+          "Payments"
+        ],
+        "summary": "Stripe Webhook",
+        "operationId": "stripe_webhook_api_webhook_stripe_post",
+        "parameters": [
+          {
+            "name": "Stripe-Signature",
+            "in": "header",
+            "required": false,
+            "schema": "@{type=string; title=Stripe-Signature}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/api/courses/{course_id}/comments": {
+      "post": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "Add Comment",
+        "operationId": "add_comment_api_courses__course_id__comments_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ],
+        "parameters": [
+          {
+            "name": "course_id",
+            "in": "path",
+            "required": true,
+            "schema": "@{type=integer; title=Course Id}"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": "@{schema=}"
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "List Comments",
+        "operationId": "list_comments_api_courses__course_id__comments_get",
+        "parameters": [
+          {
+            "name": "course_id",
+            "in": "path",
+            "required": true,
+            "schema": "@{type=integer; title=Course Id}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/api/profile": {
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Get Profile",
+        "operationId": "get_profile_api_profile_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Update Profile",
+        "operationId": "update_profile_api_profile_put",
+        "requestBody": {
+          "content": {
+            "application/json": "@{schema=}"
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ]
+      }
+    },
+    "/api/profile/stats": {
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Get Stats",
+        "operationId": "get_stats_api_profile_stats_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ]
+      }
+    },
+    "/api/profile/badges": {
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Get Badges",
+        "operationId": "get_badges_api_profile_badges_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ]
+      }
+    },
+    "/api/profile/certificates": {
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Get Certificates",
+        "operationId": "get_certificates_api_profile_certificates_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ]
+      }
+    },
+    "/api/admin/stats": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Admin Stats",
+        "operationId": "admin_stats_api_admin_stats_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ]
+      }
+    },
+    "/api/admin/users": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "List Users",
+        "operationId": "list_users_api_admin_users_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ]
+      }
+    },
+    "/api/admin/users/{user_id}": {
+      "delete": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Delete User",
+        "operationId": "delete_user_api_admin_users__user_id__delete",
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": "@{type=integer; title=User Id}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/api/admin/coupons": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "List Coupons",
+        "operationId": "list_coupons_api_admin_coupons_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Create Coupon",
+        "operationId": "create_coupon_api_admin_coupons_post",
+        "requestBody": {
+          "content": {
+            "application/json": "@{schema=}"
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ]
+      }
+    },
+    "/api/admin/coupons/{coupon_id}": {
+      "delete": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Delete Coupon",
+        "operationId": "delete_coupon_api_admin_coupons__coupon_id__delete",
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ],
+        "parameters": [
+          {
+            "name": "coupon_id",
+            "in": "path",
+            "required": true,
+            "schema": "@{type=integer; title=Coupon Id}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/api/presign": {
+      "get": {
+        "tags": [
+          "Upload"
+        ],
+        "summary": "Get Presigned Url",
+        "operationId": "get_presigned_url_api_presign_get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": ""
+          }
+        ],
+        "parameters": [
+          {
+            "name": "content_type",
+            "in": "query",
+            "required": false,
+            "schema": "@{type=string; default=video/mp4; title=Content Type}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Root",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": "@{application/json=}"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AdminStats": {
+        "properties": {
+          "total_users": {
+            "type": "integer",
+            "title": "Total Users"
+          },
+          "total_courses": {
+            "type": "integer",
+            "title": "Total Courses"
+          },
+          "total_enrollments": {
+            "type": "integer",
+            "title": "Total Enrollments"
+          },
+          "total_revenue": {
+            "type": "number",
+            "title": "Total Revenue"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_users",
+          "total_courses",
+          "total_enrollments",
+          "total_revenue"
+        ],
+        "title": "AdminStats"
+      },
+      "BadgeOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "icon": {
+            "type": "string",
+            "title": "Icon"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "xp_required": {
+            "type": "integer",
+            "title": "Xp Required"
+          },
+          "earned": {
+            "type": "boolean",
+            "title": "Earned",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "icon",
+          "description",
+          "xp_required"
+        ],
+        "title": "BadgeOut"
+      },
+      "Body_login_api_login_post": {
+        "properties": {
+          "grant_type": {
+            "anyOf": " ",
+            "title": "Grant Type"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "scope": {
+            "type": "string",
+            "title": "Scope",
+            "default": ""
+          },
+          "client_id": {
+            "anyOf": " ",
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": " ",
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "Body_login_api_login_post"
+      },
+      "CheckoutResponse": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "title": "CheckoutResponse"
+      },
+      "CommentCreate": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "title": "Content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "CommentCreate"
+      },
+      "CommentOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id"
+          },
+          "user_name": {
+            "type": "string",
+            "title": "User Name",
+            "default": ""
+          },
+          "user_avatar": {
+            "type": "string",
+            "title": "User Avatar",
+            "default": ""
+          },
+          "course_id": {
+            "type": "integer",
+            "title": "Course Id"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "created_at": {
+            "anyOf": " ",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "user_id",
+          "course_id",
+          "content"
+        ],
+        "title": "CommentOut"
+      },
+      "CouponApply": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code"
+        ],
+        "title": "CouponApply"
+      },
+      "CouponCreate": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "discount_percent": {
+            "type": "number",
+            "title": "Discount Percent"
+          },
+          "expires_at": {
+            "anyOf": " ",
+            "title": "Expires At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "discount_percent"
+        ],
+        "title": "CouponCreate"
+      },
+      "CouponOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "discount_percent": {
+            "type": "number",
+            "title": "Discount Percent"
+          },
+          "expires_at": {
+            "anyOf": " ",
+            "title": "Expires At"
+          },
+          "active": {
+            "type": "boolean",
+            "title": "Active"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "code",
+          "discount_percent",
+          "active"
+        ],
+        "title": "CouponOut"
+      },
+      "CourseCreate": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "default": ""
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "default": "prog"
+          },
+          "price": {
+            "type": "number",
+            "title": "Price",
+            "default": 0.0
+          },
+          "is_free": {
+            "type": "boolean",
+            "title": "Is Free",
+            "default": true
+          },
+          "image_url": {
+            "type": "string",
+            "title": "Image Url",
+            "default": ""
+          },
+          "instructor": {
+            "type": "string",
+            "title": "Instructor",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "title"
+        ],
+        "title": "CourseCreate"
+      },
+      "CourseDetailOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "price": {
+            "type": "number",
+            "title": "Price"
+          },
+          "is_free": {
+            "type": "boolean",
+            "title": "Is Free"
+          },
+          "image_url": {
+            "type": "string",
+            "title": "Image Url"
+          },
+          "instructor": {
+            "type": "string",
+            "title": "Instructor"
+          },
+          "created_at": {
+            "anyOf": " ",
+            "title": "Created At"
+          },
+          "lessons": {
+            "items": "@{$ref=#/components/schemas/LessonOut}",
+            "type": "array",
+            "title": "Lessons",
+            "default": ""
+          },
+          "total_lessons": {
+            "type": "integer",
+            "title": "Total Lessons",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "description",
+          "category",
+          "price",
+          "is_free",
+          "image_url",
+          "instructor"
+        ],
+        "title": "CourseDetailOut"
+      },
+      "CourseOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "price": {
+            "type": "number",
+            "title": "Price"
+          },
+          "is_free": {
+            "type": "boolean",
+            "title": "Is Free"
+          },
+          "image_url": {
+            "type": "string",
+            "title": "Image Url"
+          },
+          "instructor": {
+            "type": "string",
+            "title": "Instructor"
+          },
+          "created_at": {
+            "anyOf": " ",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "description",
+          "category",
+          "price",
+          "is_free",
+          "image_url",
+          "instructor"
+        ],
+        "title": "CourseOut"
+      },
+      "CourseUpdate": {
+        "properties": {
+          "title": {
+            "anyOf": " ",
+            "title": "Title"
+          },
+          "description": {
+            "anyOf": " ",
+            "title": "Description"
+          },
+          "category": {
+            "anyOf": " ",
+            "title": "Category"
+          },
+          "price": {
+            "anyOf": " ",
+            "title": "Price"
+          },
+          "is_free": {
+            "anyOf": " ",
+            "title": "Is Free"
+          },
+          "image_url": {
+            "anyOf": " ",
+            "title": "Image Url"
+          },
+          "instructor": {
+            "anyOf": " ",
+            "title": "Instructor"
+          }
+        },
+        "type": "object",
+        "title": "CourseUpdate"
+      },
+      "EnrollmentOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "course": {
+            "$ref": "#/components/schemas/CourseOut"
+          },
+          "enrolled_at": {
+            "anyOf": " ",
+            "title": "Enrolled At"
+          },
+          "completed": {
+            "type": "boolean",
+            "title": "Completed"
+          },
+          "progress_percent": {
+            "type": "number",
+            "title": "Progress Percent",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "course",
+          "completed"
+        ],
+        "title": "EnrollmentOut"
+      },
+      "ForgotPasswordRequest": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email"
+        ],
+        "title": "ForgotPasswordRequest"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": "@{$ref=#/components/schemas/ValidationError}",
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "LessonCreate": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "video_url": {
+            "type": "string",
+            "title": "Video Url",
+            "default": ""
+          },
+          "order": {
+            "type": "integer",
+            "title": "Order",
+            "default": 0
+          },
+          "duration_minutes": {
+            "type": "integer",
+            "title": "Duration Minutes",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "title"
+        ],
+        "title": "LessonCreate"
+      },
+      "LessonOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "course_id": {
+            "type": "integer",
+            "title": "Course Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "video_url": {
+            "type": "string",
+            "title": "Video Url"
+          },
+          "order": {
+            "type": "integer",
+            "title": "Order"
+          },
+          "duration_minutes": {
+            "type": "integer",
+            "title": "Duration Minutes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "course_id",
+          "title",
+          "video_url",
+          "order",
+          "duration_minutes"
+        ],
+        "title": "LessonOut"
+      },
+      "LoginRequest": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "LoginRequest"
+      },
+      "MessageResponse": {
+        "properties": {
+          "msg": {
+            "type": "string",
+            "title": "Msg"
+          }
+        },
+        "type": "object",
+        "required": [
+          "msg"
+        ],
+        "title": "MessageResponse"
+      },
+      "PresignResponse": {
+        "properties": {
+          "upload_url": {
+            "type": "string",
+            "title": "Upload Url"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key"
+          }
+        },
+        "type": "object",
+        "required": [
+          "upload_url",
+          "key"
+        ],
+        "title": "PresignResponse"
+      },
+      "ProfileStats": {
+        "properties": {
+          "total_courses": {
+            "type": "integer",
+            "title": "Total Courses"
+          },
+          "completed_courses": {
+            "type": "integer",
+            "title": "Completed Courses"
+          },
+          "xp_points": {
+            "type": "integer",
+            "title": "Xp Points"
+          },
+          "streak_days": {
+            "type": "integer",
+            "title": "Streak Days"
+          },
+          "badges_count": {
+            "type": "integer",
+            "title": "Badges Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_courses",
+          "completed_courses",
+          "xp_points",
+          "streak_days",
+          "badges_count"
+        ],
+        "title": "ProfileStats"
+      },
+      "ProfileUpdate": {
+        "properties": {
+          "name": {
+            "anyOf": " ",
+            "title": "Name"
+          },
+          "avatar_url": {
+            "anyOf": " ",
+            "title": "Avatar Url"
+          }
+        },
+        "type": "object",
+        "title": "ProfileUpdate"
+      },
+      "RefreshRequest": {
+        "properties": {
+          "refresh_token": {
+            "type": "string",
+            "title": "Refresh Token"
+          }
+        },
+        "type": "object",
+        "required": [
+          "refresh_token"
+        ],
+        "title": "RefreshRequest"
+      },
+      "RegisterRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "default": ""
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "phone": {
+            "type": "string",
+            "title": "Phone"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password",
+          "phone"
+        ],
+        "title": "RegisterRequest"
+      },
+      "ResetPasswordRequest": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "new_password": {
+            "type": "string",
+            "title": "New Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "token",
+          "new_password"
+        ],
+        "title": "ResetPasswordRequest"
+      },
+      "TokenResponse": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token"
+          },
+          "refresh_token": {
+            "type": "string",
+            "title": "Refresh Token"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type",
+            "default": "bearer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "access_token",
+          "refresh_token"
+        ],
+        "title": "TokenResponse"
+      },
+      "UserOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "avatar_url": {
+            "type": "string",
+            "title": "Avatar Url"
+          },
+          "is_admin": {
+            "type": "boolean",
+            "title": "Is Admin"
+          },
+          "is_verified": {
+            "type": "boolean",
+            "title": "Is Verified"
+          },
+          "xp_points": {
+            "type": "integer",
+            "title": "Xp Points"
+          },
+          "streak_days": {
+            "type": "integer",
+            "title": "Streak Days"
+          },
+          "created_at": {
+            "anyOf": " ",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "email",
+          "avatar_url",
+          "is_admin",
+          "is_verified",
+          "xp_points",
+          "streak_days"
+        ],
+        "title": "UserOut"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": "@{anyOf=System.Object[]}",
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "OAuth2PasswordBearer": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "scopes": "",
+            "tokenUrl": "/api/login"
+          }
+        }
+      }
+    }
+  }
+}
